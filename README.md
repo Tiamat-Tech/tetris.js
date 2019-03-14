@@ -16,3 +16,4 @@ I'm developing this solo, with the only thing in mind, is to create a basic vers
 | Added I Piece | v1.7 |
 | Added Scoring | Planned |
 
+# Current version 1.1
