@@ -1,4 +1,5 @@
 # tetris.js
+![tetris.js logo](https://i.imgur.com/CwOC9wl.png?raw=true)
 Simple javascript tetris base, that is open source, for the community to build upon
 
 # Things to know
