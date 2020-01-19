@@ -1,4 +1,4 @@
-// Devapple @ 2019 @ 6:40
+// Devapple @ 2019 @ 15:50
 
 // Defining the version
 var version = 1.1
@@ -8,8 +8,7 @@ console.log("Welcome to tetris.js! Please keep in mind, that this is a work in p
  const canvas = document.getElementById('tetris.js');
  const context = canvas.getContext('2d');
  context.scale(20,20);
- context.fillStyle = "#000";
- context.fillRect(0, 0, canvas.width, canvas.height);
+ 
 
 //Create Pieces
 const matrix = [
@@ -17,15 +16,73 @@ const matrix = [
   [1,1,1],
   [0,1,0],
 ]
-function drawMatrix(matrix){
+
+function createMatrix(w, h){
+  const matrix = [];
+  while (h--) {
+      matrix.push(new Array(w).fill(0));
+  }
+}
+
+function draw(){
+  context.fillStyle = "#000";
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  drawMatrix(player.matrix, player.pos);
+
+}
+
+function drawMatrix(matrix, offset){
   matrix.forEach((row, y) => {
     row.forEach((value, x) => {
       if(value !== 0){
         context.fillStyle = 'white';
-        context.fillRect(x, y, 1, 1);
-      }
+        context.fillRect(x + offset.x, 
+                         y + offset.y,
+                         1, 1);
+        }
     });
   });
 }
 
-drawMatrix(matrix);
+let dropCounter = 0;
+let dropInterval = 1000;
+
+function playerDrop(){
+  player.pos.y++;
+  dropCounter = 0;
+}
+
+let lastTime = 0;
+function update(time = 0){
+  const deltaTime = time - lastTime;
+  lastTime = time;
+
+  dropCounter += deltaTime;
+  if(dropCounter > dropInterval){
+    player.pos.y++;
+    dropCounter = 0;
+  }
+
+  draw();
+  requestAnimationFrame(update);
+}
+
+const arena = createMatrix(12, 20);
+console.log(arena); console.table(arena);
+
+const player = {
+  pos: {x: 5, y: 5},
+  matrix: matrix,
+}
+
+document.addEventListener('keydown', event => {
+  if(event.keyCode === 37){
+    player.pos.x--; 
+  } else if(event.keyCode === 39){
+    player.pos.x++;
+  } else if(event.keyCode === 40){
+    playerDrop();
+  }
+});
+
+update();
